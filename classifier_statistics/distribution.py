@@ -5,6 +5,7 @@ from __future__ import print_function
 import datetime
 import numpy as np
 import xml.dom.minidom
+from sklearn.metrics import confusion_matrix
  
 class classifier(object):
     # This class define a NxN matrix to store the classifier result.
@@ -12,17 +13,21 @@ class classifier(object):
     def __init__(self, num_classes):        
         # Predict of Truth
         self.PofT = np.zeros((num_classes, num_classes))
+        self.num_classes = num_classes
         
     def clear(self):
-        num_classes, _ = self.PofT.shape
-        self.PofT = np.zeros((num_classes, num_classes))
+        self.PofT = np.zeros((self.num_classes, self.num_classes))
         
     def load_result(self, input_mat):
-        if input_mat.shape == self.PofT.shape:
+        if input_mat.shape[0] == input_mat.shape[1]:
             self.PofT = input_mat
+            self.num_classes = input_mat.shape[0]
             return True
         else:
             return False
+        
+    def load_from_list(self, pred, label):
+        self.PofT = confusion_matrix(pred, label)
             
     def add_result(self, pred, label):
         # pred and label need to begin from 0
@@ -33,9 +38,8 @@ class classifier(object):
             
     def calculate_acc(self):
         # calculate total accuracy
-        num_classes, _ = self.PofT.shape
         total_obj = self.PofT.sum()
-        dialog = np.multiply(self.PofT, np.eye(num_classes))
+        dialog = np.multiply(self.PofT, np.eye(self.num_classes))
         total_true = dialog.sum()
         
         if total_obj == 0:
@@ -46,9 +50,8 @@ class classifier(object):
     
     def calculate_acc_n(self):
         # calculate accuracy for each class
-        num_classes, _ = self.PofT.shape
         total_obj = self.PofT.sum(axis=0)
-        dialog = np.multiply(self.PofT, np.eye(num_classes))
+        dialog = np.multiply(self.PofT, np.eye(self.num_classes))
         total_true = dialog.sum(axis=0)
         
         idx = [idx for (idx, val) in enumerate(total_obj) if val == 0]
@@ -58,7 +61,6 @@ class classifier(object):
     
     def calculate_acc_nxn(self):
         # calculate accuracy for each pred-label
-        num_classes, _ = self.PofT.shape
         total_obj = self.PofT.sum(axis=0)
         idx = [idx for (idx, val) in enumerate(total_obj) if val == 0]
         total_obj[idx] += 1e-9
@@ -87,7 +89,7 @@ class classifier(object):
         now = datetime.datetime.now()
         root.setAttribute('Date', now.strftime('%Y-%m-%d %H:%M:%S'))
         root.setAttribute('Object', 'ClassifierStatistic')
-        root.setAttribute('n_classes', str(self.PofT.shape[0]))
+        root.setAttribute('n_classes', str(self.num_classes))
         root.setAttribute('n_files', str(int(self.PofT.sum())))
         # add root to file
         doc.appendChild(root)
@@ -123,8 +125,8 @@ class classifier(object):
         result_nxn = collection.getElementsByTagName("ResultNxN")[0]
         r_data = result_nxn.childNodes[0].data
         row = r_data.split('\n')
-        num_classes, _ = self.PofT.shape
-        for i in range(num_classes):
+        self.num_classes, _ = self.PofT.shape
+        for i in range(self.num_classes):
             col = row[i].split(',')
-            for j in range(num_classes):
+            for j in range(self.num_classes):
                 self.PofT[i, j] = float(col[j])
