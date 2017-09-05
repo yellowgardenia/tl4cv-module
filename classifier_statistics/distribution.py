@@ -71,13 +71,14 @@ class classifier(object):
         txt = ''
         
         if arr.ndim == 1:
-            m = arr.shape
-            txt = ','.join(str(i) for i in arr)
+            #m = arr.shape
+            txt = ','.join(np.str(i) for i in arr)
         elif arr.ndim == 2:
-            m, _ = arr.shape
-            for row in range(m):
-                s = ','.join(str(i) for i in arr[row])
-                txt += (s+'\n')
+            txt = '\n'.join(','.join(np.str(col) for col in row) for row in arr)
+            #m, _ = arr.shape
+            #for row in range(m):
+            #    s = ','.join(str(i) for i in arr[row])
+            #    txt += (s+'\n')
         return txt
     
     def write_xml(self, xml_path):
@@ -90,7 +91,7 @@ class classifier(object):
         root.setAttribute('Date', now.strftime('%Y-%m-%d %H:%M:%S'))
         root.setAttribute('Object', 'ClassifierStatistic')
         root.setAttribute('n_classes', str(self.num_classes))
-        root.setAttribute('n_files', str(int(self.PofT.sum())))
+        root.setAttribute('n_files', str(np.int(self.PofT.sum())))
         # add root to file
         doc.appendChild(root)
         
@@ -124,9 +125,12 @@ class classifier(object):
         
         result_nxn = collection.getElementsByTagName("ResultNxN")[0]
         r_data = result_nxn.childNodes[0].data
-        row = r_data.split('\n')
+        
+        self.PofT = np.array([([col for col in row.split(',')]) for row in r_data.split('\n')], dtype=np.float)
         self.num_classes, _ = self.PofT.shape
-        for i in range(self.num_classes):
-            col = row[i].split(',')
-            for j in range(self.num_classes):
-                self.PofT[i, j] = float(col[j])
+        
+        #row = r_data.split('\n')
+        #for i in range(self.num_classes):
+        #    col = row[i].split(',')
+        #    for j in range(self.num_classes):
+        #        self.PofT[i, j] = np.float(col[j])
