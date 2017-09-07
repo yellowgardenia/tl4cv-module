@@ -28,6 +28,7 @@ class classifier(object):
         
     def load_from_list(self, pred, label):
         self.PofT = confusion_matrix(pred, label)
+        self.PofT = np.array(self.PofT, dtype=np.float)
             
     def add_result(self, pred, label):
         # pred and label need to begin from 0

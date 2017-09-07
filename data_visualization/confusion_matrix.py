@@ -6,7 +6,6 @@ import sys
 sys.path.append('..')
 from classifier_statistics.distribution import classifier
 
-import os
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
