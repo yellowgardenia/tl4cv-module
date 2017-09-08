@@ -91,8 +91,8 @@ class classifier(object):
         now = datetime.datetime.now()
         root.setAttribute('Date', now.strftime('%Y-%m-%d %H:%M:%S'))
         root.setAttribute('Object', 'ClassifierStatistic')
-        root.setAttribute('n_classes', str(self.num_classes))
-        root.setAttribute('n_files', str(np.int(self.PofT.sum())))
+        root.setAttribute('n_classes', np.str(self.num_classes))
+        root.setAttribute('n_files', np.str(np.int(self.PofT.sum())))
         # add root to file
         doc.appendChild(root)
         
@@ -117,8 +117,8 @@ class classifier(object):
         root.appendChild(nodeAccuracyNxN)
 
         # write xml
-        fp = open(xml_path, 'w')
-        doc.writexml(fp, indent='', addindent='\t', newl='\n', encoding="utf-8")
+        with open(xml_path, 'w') as fp:
+            doc.writexml(fp, indent='', addindent='\t', newl='\n', encoding="utf-8")
         
     def load_xml(self, xml_path):
         DOMTree = xml.dom.minidom.parse(xml_path)
@@ -128,7 +128,7 @@ class classifier(object):
         r_data = result_nxn.childNodes[0].data
         
         self.PofT = np.array([([col for col in row.split(',')]) for row in r_data.split('\n')], dtype=np.float)
-        self.num_classes, _ = self.PofT.shape
+        self.num_classes = collection.getAttribute("n_classes")
         
         #row = r_data.split('\n')
         #for i in range(self.num_classes):
