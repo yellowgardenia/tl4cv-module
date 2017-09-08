@@ -25,12 +25,10 @@ r1 = np.random.randint(0, 5, size=[40, 2])
 r2 = np.random.randint(0, 5, size=[60, 1])
 pred = np.concatenate((r1[:, 0], r2[:, 0]), axis=0)
 label = np.concatenate((r1[:, 1], r2[:, 0]), axis=0)
-c = classifier(5)
-c.load_from_list(pred, label)
 d = draw_confmat(5)
-d.load_result(c.PofT)
-d.draw(np.array(d.cm.PofT, dtype=np.int), ['1','2','3','4','5'], 'cm.png', \
+d.load_from_list(pred, label)
+d.draw(np.array(d.PofT, dtype=np.int), ['1','2','3','4','5'], 'cm.png', \
        title='Confusion matrix, without normalization')
-d.draw(d.cm.calculate_acc_nxn(), ['1','2','3','4','5'], 'cm_norm.png', \
+d.draw(d.calculate_acc_nxn(), ['1','2','3','4','5'], 'cm_norm.png', \
        title='Normalized confusion matrix')
 ```

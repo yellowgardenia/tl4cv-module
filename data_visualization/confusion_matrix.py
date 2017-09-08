@@ -10,19 +10,10 @@ import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 
-class draw_confmat(object):
+class draw_confmat(classifier):
     # a draw model for classifier
     def __init__(self, num_classes):
-        self.cm = classifier(num_classes)
-        
-    def load_result(self, input_mat):
-        self.cm.load_result(input_mat)
-        
-    def load_from_list(self, pred, label):
-        self.cm.load_from_list(pred, label)
-        
-    def load_xml(self, xml_path):
-        self.cm.load_xml(xml_path)
+        classifier.__init__(self, num_classes)
         
     def __plot_confusion_matrix(self, cm, class_name,
                                 title='Confusion Matrix',
@@ -57,7 +48,7 @@ class draw_confmat(object):
         #        fig_path = 'PathtoSave.png'
         np.set_printoptions(precision=2)
         
-        if self.cm.num_classes != len(class_name):
+        if self.num_classes != len(class_name):
             return False
         
         plt.figure()
