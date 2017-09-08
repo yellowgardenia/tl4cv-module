@@ -80,8 +80,8 @@ draw_roc(fig_path='roc.png',
          random_forests={'pred':y_pred_rf_lm, 'label':y_test})
 ```
 
-## [Dimensionality Reduction](tsne.py)
-In machine learning and statistics, [dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction) or dimension reduction is the process of reducing the number of random variables under consideration,[1] via obtaining a set of principal variables. 
+## [Dimensionality Reduction](dimensionality_reduction.py)
+In machine learning and statistics, [dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction) or dimension reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables. 
 
 Advantages of dimensionality reduction
 * It reduces the time and storage space required.
