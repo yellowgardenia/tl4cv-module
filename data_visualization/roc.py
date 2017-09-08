@@ -27,4 +27,4 @@ def draw_roc(fig_path, title='ROC Curve',
     plt.title(title, fontsize=24)
     plt.legend(loc='best', fontsize='large')
     plt.savefig(fig_path, dpi=300, facecolor='w', edgecolor='w', pad_inches=0.4, bbox_inches='tight')
-    plt.show()
+    #plt.show()

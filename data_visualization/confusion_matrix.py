@@ -54,5 +54,5 @@ class draw_confmat(classifier):
         plt.figure()
         self.__plot_confusion_matrix(cm, class_name=class_name, title=title, xylabel=xylabel, transform=transform)
         plt.savefig(fig_path, dpi=300, facecolor='w', edgecolor='w', pad_inches=0.4, bbox_inches='tight')
-        plt.show()
+        #plt.show()
         return True

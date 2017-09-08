@@ -46,6 +46,7 @@ The ROC curve is created by plotting the true positive rate (TPR) against the fa
 Sample code for the display images. The referenced python code based on **scikit-learn** can be found [here](http://scikit-learn.org/stable/auto_examples/ensemble/plot_feature_.html#sphx-glr-auto-examples-ensemble-plot-feature-transformation-py).
 
 ```python
+from roc import draw_roc
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomTreesEmbedding, RandomForestClassifier
@@ -77,4 +78,38 @@ y_pred_rf_lm = rf_lm.predict_proba(rf_enc.transform(rf.apply(X_test)))[:, 1]
 draw_roc(fig_path='roc.png',
          random_trees={'pred':y_pred_rt, 'label':y_test},
          random_forests={'pred':y_pred_rf_lm, 'label':y_test})
+```
+
+## [Dimensionality Reduction](tsne.py)
+In machine learning and statistics, [dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction) or dimension reduction is the process of reducing the number of random variables under consideration,[1] via obtaining a set of principal variables. 
+
+Advantages of dimensionality reduction
+* It reduces the time and storage space required.
+* Removal of multi-collinearity improves the performance of the machine learning model.
+* **It becomes easier to visualize the data when reduced to very low dimensions such as 2D or 3D.**
+
+### t-SNE
+[t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) (t-SNE) is a machine learning algorithm for dimensionality reduction developed by Geoffrey Hinton and Laurens van der Maaten[[1]](http://jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf). It is a nonlinear dimensionality reduction technique that is particularly well-suited for embedding high-dimensional data into a space of two or three dimensions, which can then be visualized in a scatter plot.
+
+#### Display
+* t-SNE 2D on sklearn.datasets
+![alt tag](tsne2d.png)
+
+* t-SNE 3D on sklearn.datasets
+![alt tag](tsne3d.png)
+
+#### Sample
+Sample code for the display images. The referenced python code can be found [here](https://github.com/wepe/MachineLearning/tree/master/ManifoldLearning/DimensionalityReduction_DataVisualizing)
+
+```python
+from dimensionality_reduction import draw_tsne2d, draw_tsne3d
+from sklearn import datasets
+
+# load data
+digits = datasets.load_digits(n_class=4)
+X = digits.data
+y = digits.target
+
+draw_tsne2d(X, y, 'tsne2d.png', title='t-SNE 2D')
+draw_tsne3d(X, y, 'tsne3d.png', title='t-SNE 3D')
 ```
