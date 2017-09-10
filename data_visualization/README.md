@@ -8,10 +8,10 @@ The figures show the confusion matrix with and without normalization by class su
 
 ### Display
 * Confusion matrix without normalization
-![alt tag](cm.png)
+![alt tag](display/cm.png)
 
 * Confusion matrix with normalization
-![alt tag](cm_norm.png)
+![alt tag](display/cm_norm.png)
 
 ### Sample
 Sample code for the display images. The referenced python code based on **scikit-learn** can be found [here](http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html).
@@ -27,9 +27,9 @@ pred = np.concatenate((r1[:, 0], r2[:, 0]), axis=0)
 label = np.concatenate((r1[:, 1], r2[:, 0]), axis=0)
 d = draw_confmat(5)
 d.load_from_list(pred, label)
-d.draw(np.array(d.PofT, dtype=np.int), ['1','2','3','4','5'], 'cm.png',
+d.draw(np.array(d.PofT, dtype=np.int), ['1','2','3','4','5'], 'display/cm.png',
        title='Confusion matrix, without normalization')
-d.draw(d.calculate_acc_nxn(), ['1','2','3','4','5'], 'cm_norm.png',
+d.draw(d.calculate_acc_nxn(), ['1','2','3','4','5'], 'display/cm_norm.png',
        title='Normalized confusion matrix')
 ```
 
@@ -40,7 +40,7 @@ The ROC curve is created by plotting the true positive rate (TPR) against the fa
 
 ### Display
 * ROC Curve for random trees and random forests on sklearn.datasets
-![alt tag](roc.png)
+![alt tag](display/roc.png)
 
 ### Sample
 Sample code for the display images. The referenced python code based on **scikit-learn** can be found [here](http://scikit-learn.org/stable/auto_examples/ensemble/plot_feature_.html#sphx-glr-auto-examples-ensemble-plot-feature-transformation-py).
@@ -75,7 +75,7 @@ rf_enc.fit(rf.apply(X_train))
 rf_lm.fit(rf_enc.transform(rf.apply(X_train_lr)), y_train_lr)
 y_pred_rf_lm = rf_lm.predict_proba(rf_enc.transform(rf.apply(X_test)))[:, 1]
 
-draw_roc(fig_path='roc.png',
+draw_roc(fig_path='display/roc.png',
          random_trees={'pred':y_pred_rt, 'label':y_test},
          random_forests={'pred':y_pred_rf_lm, 'label':y_test})
 ```
@@ -93,10 +93,10 @@ Advantages of dimensionality reduction
 
 #### Display
 * t-SNE 2D on sklearn.datasets
-![alt tag](tsne2d.png)
+![alt tag](display/tsne2d.png)
 
 * t-SNE 3D on sklearn.datasets
-![alt tag](tsne3d.png)
+![alt tag](display/tsne3d.png)
 
 #### Sample
 Sample code for the display images. The referenced python code can be found [here](https://github.com/wepe/MachineLearning/tree/master/ManifoldLearning/DimensionalityReduction_DataVisualizing)
@@ -110,6 +110,6 @@ digits = datasets.load_digits(n_class=4)
 X = digits.data
 y = digits.target
 
-draw_tsne2d(X, y, 'tsne2d.png', title='t-SNE 2D')
-draw_tsne3d(X, y, 'tsne3d.png', title='t-SNE 3D')
+draw_tsne2d(X, y, 'display/tsne2d.png', title='t-SNE 2D')
+draw_tsne3d(X, y, 'display/tsne3d.png', title='t-SNE 3D')
 ```
