@@ -6,7 +6,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-import divide_method as dm
+import sl_divide_method as dm
 import time
 
 tf.app.flags.DEFINE_string('divide_method', 'divide_into_two_parts, ratio=0.5', 'The method of dataset divide.')
