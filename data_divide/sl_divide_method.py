@@ -116,7 +116,7 @@ def read_lines(path):
 def divide_into_two_parts(image_root, list_path, save_path, **kwargs):
     default_ratio = 0.5
     try:
-        ratio = kwargs['ratio']
+        ratio = np.float(kwargs['ratio'])
     except:
         ratio = default_ratio
     
@@ -156,11 +156,58 @@ def divide_into_two_parts(image_root, list_path, save_path, **kwargs):
     data_div.update_mean()
     data_div.show()
     data_div.save_info(os.path.join(save_path, 'list_info.xml'))
+    
+
+def divide_into_n_parts(image_root, list_path, save_path, **kwargs):
+    default_r = '1:1'
+    try:
+        r = kwargs['r']
+    except:
+        r = default_r
+    
+    ratio = np.array(r.split(':'), dtype=np.float)
+    k = ratio.shape[0]
+    num_classes = kwargs['num_classes']
+    data_div = data_divide(num_classes=num_classes, num_parts=k)
+
+    fheader = ['name', 'label']
+    for i in range(k):
+        f = open(os.path.join(save_path, 'list_'+str(i)+'.csv'), 'w')
+        f.write(fheader[0]+','+fheader[1]+'\n')
+        f.close()
+
+    f_list = read_lines(list_path)
+    label_max = np.zeros((1, num_classes))
+    for line in f_list:
+        label = int(line[1])
+        label_max[0, label] += 1
+    max_list = np.zeros((k, num_classes))
+    #max_list[:] = label_max / k
+    for i in range(k):
+        max_list[i, :] = label_max * ratio[i] / np.sum(ratio)
+        
+    data_div.get_max_list(max_list)
+
+    for line in f_list:
+        img = cv2.imread(os.path.join(image_root, line[0]+'.tif'))
+        label = int(line[1])
+        mean = img.mean()
+
+        save_flag = random.randint(0, k-1)
+        save_flag = data_div.count(save_flag, label, mean)
+
+        with open(os.path.join(save_path, 'list_'+str(save_flag)+'.csv'), 'a+') as f:
+            f.write(line[0]+','+np.str(np.int(line[1]))+'\n')
+            
+    data_div.update_mean()
+    data_div.show()
+    data_div.save_info(os.path.join(save_path, 'list_info.xml'))
+    
 
 def divide_into_k_folds(image_root, list_path, save_path, **kwargs):
     default_k = 10
     try:
-        k = int(kwargs['k'])
+        k = np.int(kwargs['k'])
     except:
         k = default_k
     
@@ -199,6 +246,7 @@ def divide_into_k_folds(image_root, list_path, save_path, **kwargs):
     
 method_map = {
     'divide_into_two_parts': divide_into_two_parts,
+    'divide_into_n_parts': divide_into_n_parts,
     'k_fold_cross_validation': divide_into_k_folds,
 }
 

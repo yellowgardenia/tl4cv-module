@@ -17,6 +17,9 @@
 ```
   python sl_divide_app.py \
       --divide_method="divide_into_two_parts, ratio=0.5"
+	  
+  python sl_divide_app.py \
+      --divide_method="divide_into_n_parts, r=5:1:4"
 
   python sl_divide_app.py \
       --divide_method="k_fold_cross_validation, k=5"
@@ -25,5 +28,6 @@
 ### divide_method
 分组方法 | 函数名 | 参数
 :-------:|:------:|:----:
-二分法 | divide_into_two_parts | ratio（组1比例）
-k折交叉验证 | k_fold_cross_validation | k（k fold）
+二分法 | divide_into_two_parts | ratio（组1比例[0.5]）
+n分法 | divide_into_n_parts | r（n组比例[5:1:4]）
+k折交叉验证 | k_fold_cross_validation | k（k fold[5]）

@@ -24,7 +24,7 @@ def get_dict(p_str, p_dict):
     if p_ is not None:
         for s in p_:
             key = s.split('=')[0]
-            value = float(s.split('=')[1])
+            value = s.split('=')[1]
             p_dict[key] = value
     return name, p_dict
 
