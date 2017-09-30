@@ -9,6 +9,7 @@ import tensorflow as tf
 import cv2
 import os
 import numpy as np
+import csv
 
 def read_lines(path):
     ftype = path.split('.')[-1]

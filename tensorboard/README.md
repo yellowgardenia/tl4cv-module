@@ -9,11 +9,13 @@ writer = tf.summary.FileWriter("log/")
 
 
 ## 查看graph结构
-对网络结构中的关键结构（如卷积层、池化层、全连接层等）进行命名，可以优化graph的显示效果，再将grapy传入`writer`即可显示：
+对网络结构中的关键结构（如卷积层、池化层、全连接层等）进行命名，可以优化graph的显示效果，再将graph传入`writer`即可显示：
 
 ```python
+# the first way
 writer = tf.summary.FileWriter("log/", sess.graph)
 
+# the second way
 writer = tf.summary.FileWriter("log/")
 writer.add_graph(sess.graph)
 ```
@@ -41,10 +43,10 @@ tf.summary.scalar('acc', accuracy)
 tf.summary.image('input', x_image, 3)
 tf.summary.histogram(param.name, param)
 
-#用一个 merge 把所有的 summary 合成一个 target
+# 用一个 merge 把所有的 summary 合成一个 target
 merged = tf.summary.merge_all()
 
-#运行写入（i是一个计数器）
+# 运行写入（i是一个计数器）
 result = sess.run(merged, feed_dict=feed_dict)
 writer.add_summary(result, i)
 ```

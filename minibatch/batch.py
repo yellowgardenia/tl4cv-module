@@ -3,6 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
+import os
+import cv2
+import csv
 
 def read_lines(path):
     ftype = path.split('.')[-1]
@@ -26,7 +29,17 @@ def list2npArray(flist):
     x = farray[:, 0]
     y = np.array(farray[:, 1], dtype=np.int)
     return x, y
-     
+    
+def Ximread(x, path):
+    im = cv2.imread(os.path.join(path, x[0]+'.tif'))
+    w, h, c = im.shape
+    k = x.shape[0]
+    X = np.zeros((k, w, h, c))
+    for i in range(k):
+        im = cv2.imread(os.path.join(path, x[i]+'.tif'))
+        X[i, :, :, :] = im
+    return X
+	
 def auto_batch_max(N, max_batch=-1):
     if max_batch < 1:
         max_batch = np.int(np.sqrt(N))
