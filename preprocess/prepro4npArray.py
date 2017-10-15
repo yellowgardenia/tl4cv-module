@@ -21,7 +21,6 @@ def im_random_crop(img, **kwargs):
     except:
         size = kwargs['default_size']
     
-    _, _, nz = img.get_shape().as_list()
     img = tl.prepro.crop_multi(img, size, size, is_random=True)
     return img
 
