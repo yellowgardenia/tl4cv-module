@@ -35,8 +35,8 @@
       while [ $j -lt $k_fold ]
       do
           if [ $j -ne $i ] ; then
-		      cp list_$j.csv tmp.csv
-			  sed -i '1d' tmp.csv
+              cp list_$j.csv tmp.csv
+              sed -i '1d' tmp.csv
               cat tmp.csv >> merge_list_$i.csv
           fi
           j=$(($j+1))
