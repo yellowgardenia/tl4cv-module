@@ -21,8 +21,31 @@
   python sl_divide_app.py \
       --divide_method="divide_into_n_parts, r=5:1:4"
 
+  ### k fold cross validation
+  k_fold=5
   python sl_divide_app.py \
-      --divide_method="k_fold_cross_validation, k=5"
+      --divide_method="k_fold_cross_validation, k=$k_fold"
+
+  i=0
+  while [ $i -lt $k_fold ]
+  do
+      cp list_$i.csv merge_list_$i.csv
+	  sed -i '2,$d' merge_list_$i.csv
+      j=0
+      while [ $j -lt $k_fold ]
+      do
+          if [ $j -ne $i ] ; then
+		      cp list_$j.csv tmp.csv
+			  sed -i '1d' tmp.csv
+              cat tmp.csv >> merge_list_$i.csv
+          fi
+          j=$(($j+1))
+      done
+
+      i=$(($i+1))
+  done
+  rm tmp.csv
+  
 ```
 
 ### divide_method

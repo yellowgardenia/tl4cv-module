@@ -52,6 +52,7 @@ def dense_crf(probs, img=None, n_iters=10,
         
         if img is not None:
             assert(img.shape[1:3] == (w, h)), "The image height and width must coincide with dimensions of the logits."
+            img = np.array(img, dtype=np.uint8)
             d.addPairwiseBilateral(sxy=sxy_bilateral, compat=compat_bilateral,
                                    kernel=kernel_bilateral, normalization=normalisation_bilateral,
                                    srgb=srgb_bilateral, rgbim=img[i])
@@ -67,7 +68,7 @@ def dense_crf(probs, img=None, n_iters=10,
 Use py func with tf:
     preds = tf.py_func(dense_crf, [tf.nn.softmax(probs), img], tf.float32)
 
-If num_classes == 1:
+If num_classes == 1:???
     probs = tf.concat([probs, blank_class], axis=3)
     preds = func...(probs...)
     preds = preds[0]
