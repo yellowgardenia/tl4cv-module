@@ -77,22 +77,26 @@ def im_random_contrast(img, **kwargs):
         img = tf.image.random_contrast(img, lower=lower, upper=upper)
     return img
 
-def im_standardization(img, **kwargs):
-    with_seg = kwargs['with_seg']
-    if with_seg:
-        nx, ny, nz = img.get_shape().as_list()
-        img3 = img[:, :, 0:nz-1]
-        seg = img[:, :, nz-1]
-        seg = tf.reshape(seg, [nx, ny, 1])
-        img3 = tf.image.per_image_standardization(img3)
-        img = tf.concat([img3, seg], axis=2)
-    else:
-        img = tf.image.per_image_standardization(img)
-    return img
 """
 
+def im_standardization(img, **kwargs):
+    with_seg = kwargs['with_seg']
+    _, nx, ny, nz = img.shape
+    
+    if with_seg:
+        img[:, :, :, 0:nz-1] -= np.mean(
+                np.mean(img[:, :, :, 0:nz-1], axis=1, keepdims=True), axis=2, keepdims=True)
+        img[:, :, :, 0:nz-1] /= (np.std(
+                np.std(img[:, :, :, 0:nz-1], axis=2, keepdims=True), axis=2, keepdims=True) + 1e-9)
+    else:
+        img -= np.mean(np.mean(img, axis=1, keepdims=True), axis=2, keepdims=True)
+        img /= (np.std(np.std(img, axis=1, keepdims=True), axis=2, keepdims=True) + 1e-9)
+    
+    return img
+
 def im_reduce_mean(img, **kwargs):
-    default_mean = 91.0
+    default_mean = np.mean(np.mean(img, axis=1, keepdims=True), axis=2, keepdims=True)
+
     try:
         mean = kwargs['mean']
     except:
@@ -100,8 +104,8 @@ def im_reduce_mean(img, **kwargs):
 
     with_seg = kwargs['with_seg']
     if with_seg:
-        _, _, nz = img.shape
-        img[:, :, 0:nz-1] -= mean
+        _, _, _, nz = img.shape
+        img[:, :, :, 0:nz-1] -= mean[:, :, :, 0:nz-1]
     else:
         img = img - mean
     return img
@@ -124,7 +128,7 @@ prepro_map = {
     'random_flip_v': im_random_flip_v,
     #'random_brightness': im_random_brightness,
     #'random_contrast': im_random_contrast,
-    #'standardization': im_standardization,
+    'standardization': im_standardization,
     'reduce_mean': im_reduce_mean,
     'resize': im_resize,
 }
