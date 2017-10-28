@@ -31,12 +31,25 @@ def list2npArray(flist):
     return x, y
     
 def Ximread(x, path):
+    """ ori image read """
     im = cv2.imread(os.path.join(path, x[0]+'.tif'))
     w, h, c = im.shape
     k = x.shape[0]
     X = np.zeros((k, w, h, c))
     for i in range(k):
         im = cv2.imread(os.path.join(path, x[i]+'.tif'))
+        X[i, :, :, :] = im
+    return X
+
+def MaskImread(x, path):
+    """ mask [0, 1] image read """
+    im = cv2.imread(os.path.join(path, x[0]+'.tif'), 0)
+    w, h = im.shape
+    k = x.shape[0]
+    X = np.zeros((k, w, h, 1))
+    for i in range(k):
+        im = cv2.imread(os.path.join(path, x[i]+'.tif'), 0)>0
+        im = np.reshape(im, [w, h, 1])
         X[i, :, :, :] = im
     return X
 	
