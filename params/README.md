@@ -12,6 +12,10 @@ train_params = network.all_params[5:]
 
 ```python
 train_params = tl.layers.get_variables with names('dense', train_only=True, printable=True)
+
+fc_p = [v for v in all_params if 'fc' in v.name]
+fc_wp = [v for v in fc_p if 'weights' in v.name]
+fc_bp = [v for v in fc_p if 'biases' in v.name]
 ```
 
 得到参数列表之后，定义如下优化器即可：
