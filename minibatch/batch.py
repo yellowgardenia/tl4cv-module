@@ -49,7 +49,7 @@ def MaskImread(x, path):
     X = np.zeros((k, w, h, 1))
     for i in range(k):
         im = cv2.imread(os.path.join(path, x[i]+'.tif'), 0)>0
-        im = np.reshape(im, [w, h, 1])
+        im = im.reshape(w, h, 1)
         X[i, :, :, :] = im
     return X
 	

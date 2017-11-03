@@ -87,7 +87,7 @@ def im_standardization(img, **kwargs):
         img[:, :, :, 0:nz-1] -= np.mean(
                 np.mean(img[:, :, :, 0:nz-1], axis=1, keepdims=True), axis=2, keepdims=True)
         img[:, :, :, 0:nz-1] /= (np.std(
-                np.std(img[:, :, :, 0:nz-1], axis=2, keepdims=True), axis=2, keepdims=True) + 1e-9)
+                np.std(img[:, :, :, 0:nz-1], axis=1, keepdims=True), axis=2, keepdims=True) + 1e-9)
     else:
         img -= np.mean(np.mean(img, axis=1, keepdims=True), axis=2, keepdims=True)
         img /= (np.std(np.std(img, axis=1, keepdims=True), axis=2, keepdims=True) + 1e-9)
